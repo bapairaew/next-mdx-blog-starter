@@ -1,65 +1,97 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { NextSeo } from "next-seo";
+import Link from "next/link";
+import { Box, Card, Container, Heading, Link as A, Text } from "theme-ui";
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
+import { getAllBlogs } from "~/libs/data";
 
-export default function Home() {
+export const getStaticProps = async () => {
+  const blogs = await getAllBlogs();
+  return {
+    props: { blogs },
+  };
+};
+
+export default function Home({ blogs }) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    <>
+      <NextSeo
+        title="Next.js MDX Blog Starter Template"
+        description="Write a blog in MDX with Next.js"
+      />
+      <Header />
+      <Container>
+        <Box my={4}>
+          <Heading as="h1">Next.js MDX Blog Starter Template</Heading>
+          <Text my={3}>
+            This is a demo for a{" "}
+            <A
+              href="https://github.com/bapairaew/next-mdx-blog-starter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              next-mdx-blog-starter
+            </A>{" "}
+            a simple MDX based blog starter template built with{" "}
+            <A
+              href="https://nextjs.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Next.js
+            </A>{" "}
+            and{" "}
+            <A
+              href="https://theme-ui.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Theme UI
+            </A>
+            .
+          </Text>
+          <Text as="p">
+            This should help you kickstart your own blog and then can build a
+            lot of things on top of this. For example, you can have a look at{" "}
+            <A
+              href="https://bapairaew.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              my website
+            </A>{" "}
+            which is also{" "}
+            <A
+              href="https://github.com/bapairaew/bapairaew.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              open-source
+            </A>
+            .
+          </Text>
+        </Box>
+        <Box my={4}>
+          <Heading as="h1">Blogs</Heading>
+          <Box as="ul" p={0}>
+            {blogs?.map((blog) => (
+              <Box key={blog.slug} as="li" sx={{ listStyle: "none" }}>
+                <Link passHref href={`/blogs/${blog.slug}`}>
+                  <A>
+                    <Card my={3}>
+                      <Heading as="h2">{blog.title}</Heading>
+                      <Text as="p" my={2}>
+                        {blog.description}
+                      </Text>
+                    </Card>
+                  </A>
+                </Link>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      </Container>
+      <Footer />
+    </>
+  );
 }
