@@ -2,6 +2,8 @@
 
 Simple [Next.js](https://nextjs.org) + MDX based blog starter template.
 
+[Demo](https://next-mdx-blog-starter-lac.vercel.app/)
+
 ## Instruction
 
 1. clone this repository and run `yarn install`
